@@ -14,14 +14,20 @@
     .hidden {
       display: none;
     }
+	@keyframes fade-in {
+      0% { opacity: 0; transform: translateY(10px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+      animation: fade-in 0.6s ease-out;
+    }
     .container {
       max-width: 600px;
       margin: auto;
       min-height: 80vh;
       padding: 1rem;
     }
-    /* Ajoute ici les styles de tes deux designs */
-    /* --- Design 1 --- */
+
     .design1 {
       background: linear-gradient(135deg, #111111 0%, #1a1a1a 100%);
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -43,49 +49,26 @@
     .letter-spacing-wider {
       letter-spacing: 0.3em;
     }
-    /* --- Design 2 --- */
-    .design2 {
-      background-color: #1a1a1a;
-      border-radius: 1rem;
-      padding: 2rem;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.7);
-      color: white;
-    }
-    a {
-      transition: color 0.3s;
-    }
-    a:hover {
-      color: #ddd;
-    }
-    /* Bouton de switch */
-    #switchBtn {
-      position: fixed;
-      top: 1rem;
-      right: 1rem;
-      padding: 0.5rem 1rem;
-      background: #333;
-      color: #eee;
-      border: none;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      font-weight: 600;
-      z-index: 1000;
-      transition: background-color 0.3s;
-    }
-    #switchBtn:hover {
-      background: #555;
-    }
   </style>
 </head>
 <body class="flex items-center justify-center min-h-screen px-4">
-
-  <button id="switchBtn">Changer le design</button>
-
-  <!-- Conteneur général -->
+	<a href="design2.html" class="switch-link" aria-label="Passer au design 2" style="
+	  position: fixed;
+	  top: 1rem;
+	  right: 1rem;
+	  background: #222;
+	  color: #eee;
+	  padding: 0.5rem 1rem;
+	  border-radius: 0.5rem;
+	  text-decoration: none;
+	  font-weight: 600;
+	  transition: background-color 0.3s;
+	  z-index: 1000;
+	">
+	  Changer le design
+	</a>
   <div class="container">
-
-    <!-- Design 1 (par défaut visible) -->
-    <div id="design1" class="design1">
+    <div id="design1" class="design1 animate-fade-in">
       <div class="text-center mb-12">
         <h1 class="text-5xl font-extralight mb-2 letter-spacing-wide">CAPTAIN</h1>
         <h2 class="text-xl font-light text-gray-400 letter-spacing-wider uppercase">EVENT</h2>
@@ -114,47 +97,5 @@
         <p class="text-gray-600 text-xs font-light letter-spacing-wide">MMXXIV</p>
       </div>
     </div>
-
-    <!-- Design 2 (initialement caché) -->
-    <div id="design2" class="design2 hidden">
-      <div class="text-center mb-6">
-        <h1 class="text-2xl font-semibold mb-1">Captain Event</h1>
-        <p class="text-gray-400 mb-6">Agence d'événementiel haut de gamme</p>
-      </div>
-      <div class="space-y-3 text-sm text-gray-300">
-        <p><span class="font-semibold">📞 Téléphone :</span> <a href="tel:+33612345678" class="hover:text-white">07 63 11 42 83</a></p>
-        <p><span class="font-semibold">✉️ Email :</span> <a href="mailto:contact@captainevent.fr" class="hover:text-white">contact@captainevent.fr</a></p>
-        <p><span class="font-semibold">📍 Adresse :</span> Paris, France</p>
-      </div>
-      <div class="flex justify-center gap-4 mt-6">
-        <a href="https://linkedin.com/company/captainevent" target="_blank" class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full text-sm font-medium transition">
-          LinkedIn
-        </a>
-        <a href="https://instagram.com/captainevent" target="_blank" class="flex items-center gap-2 bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded-full text-sm font-medium transition">
-          Instagram
-        </a>
-      </div>
-    </div>
-
-  </div>
-
-  <script>
-    const btn = document.getElementById('switchBtn');
-    const design1 = document.getElementById('design1');
-    const design2 = document.getElementById('design2');
-
-    btn.addEventListener('click', () => {
-      if (design1.classList.contains('hidden')) {
-        design1.classList.remove('hidden');
-        design2.classList.add('hidden');
-        btn.textContent = 'Changer le design';
-      } else {
-        design1.classList.add('hidden');
-        design2.classList.remove('hidden');
-        btn.textContent = 'Revenir au design initial';
-      }
-    });
-  </script>
-
 </body>
 </html>
