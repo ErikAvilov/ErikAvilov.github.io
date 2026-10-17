@@ -1,150 +1,320 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Carte de visite - Captain Event</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #0a0a0a;
-      margin: 0;
-    }
-    .hidden {
-      display: none;
-    }
-    @keyframes fade-in {
-      0% { opacity: 0; transform: translateY(10px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
-    .animate-fade-in {
-      animation: fade-in 0.6s ease-out;
-    }
-    .container {
-      max-width: 600px;
-      margin: auto;
-      min-height: 80vh;
-      padding: 1rem 2rem;
-      box-sizing: border-box;
-    }
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Carte de visite - Captain Event</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet" />
+	<style>
+	body { font-family: 'Inter', sans-serif; background: #0a0a0a;}
+	.card-container { position: relative; width: 100%; max-width: 28rem; height: auto; cursor: pointer;}
 
-    .design1 {
-      background: linear-gradient(135deg, #111111 0%, #1a1a1a 100%);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 1rem;
-      padding: 3rem 4rem;
-      box-shadow: 0 0 40px rgba(255,255,255,0.03);
-      color: white;
-      box-sizing: border-box;
-    }
-    .accent-line {
-      background: linear-gradient(90deg, transparent 0%, #ffffff 20%, #ffffff 80%, transparent 100%);
-      height: 1px;
-      opacity: 0.3;
-      margin: 1rem auto;
-      width: 8rem;
-    }
-    .letter-spacing-wide {
-      letter-spacing: 0.2em;
-    }
-    .letter-spacing-wider {
-      letter-spacing: 0.3em;
-    }
-    /* Responsive pour mobiles */
-    @media (max-width: 480px) {
-      .container {
-        padding: 1rem;
-        min-height: auto;
-      }
-      .design1 {
-        padding: 1.5rem 1.5rem;
-        border-radius: 0.75rem;
-      }
-      h1 {
-        font-size: 2.8rem !important; /* réduit la taille */
-      }
-      h2 {
-        font-size: 1.1rem !important;
-      }
-      p {
-        font-size: 0.9rem !important;
-      }
-      .accent-line {
-        width: 5rem;
-        margin: 0.5rem auto 1rem auto;
-      }
-      .space-y-6 > div {
-        flex-direction: column !important;
-        align-items: flex-start !important;
-        gap: 0.3rem;
-      }
-      .space-y-6 > div > a,
-      .space-y-6 > div > span {
-        font-size: 0.9rem !important;
-      }
-      .space-y-6 > div {
-        padding: 0.5rem 0 !important;
-        border-bottom: 1px solid rgba(255,255,255,0.1) !important;
-      }
-    }
+	.card-face {width: 100%;transition: opacity 0.3s ease, transform 0.3s ease;}
+	.elegant-glow {box-shadow: 0 0 40px rgba(255, 255, 255, 0.03), 0 0 80px rgba(212, 175, 55, 0.02);}
+	.subtle-border {border: 1px solid rgba(255, 255, 255, 0.08);position: relative;}	
+	.subtle-border::before {content: '';position: absolute;top: 0;left: 20%;right: 20%;height: 1px;background: linear-gradient(90deg, transparent 0%, #d4af37 50%, transparent 100%);opacity: 0.6;}
+	.premium-gradient {background:linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.7) 100%),url('leather-soft.jpg') no-repeat center center / cover;}
+	.gold-accent {background: linear-gradient(90deg, transparent 0%, #d4af37 20%, #d4af37 80%, transparent 100%);height: 1px;opacity: 0.8;}
+	.gold-dot {width: 4px;height: 4px;background: #d4af37;border-radius: 50%;opacity: 0.7;}		
+	.gold-corner {position: absolute;width: 20px;height: 20px;border: 1px solid #d4af37;opacity: 0.3;}		
+	.gold-corner.top-left {top: 24px;left: 24px;border-right: none;border-bottom: none;}		
+	.gold-corner.bottom-right {bottom: 24px;right: 24px;border-left: none;border-top: none;}		
+	.hover-lift {transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);}		
+	.fade-in {animation: fadeIn 1.2s ease-out;}		
+	.slide-up {animation: slideUp 0.8s ease-out 0.3s both;}		
+	.gold-shimmer {position: relative;overflow: hidden;}		
+	.gold-shimmer::after {content: '';position: absolute;top: 0;left: -100%;width: 100%;height: 100%;background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);animation: shimmer 3s infinite;}
+	.minimal-icon {width: 16px;height: 16px;opacity: 0.6;transition: all 0.3s ease;}
+	.contact-item:hover .minimal-icon {opacity: 1;color: #d4af37;}
+	.gold-divider {height: 1px;background: linear-gradient(90deg, transparent 0%, rgba(212, 175, 55, 0.3) 50%, transparent 100%);}
+	.geometric-accent {position: absolute;width: 40px;height: 40px;border: 1px solid rgba(212, 175, 55, 0.2);transform: rotate(45deg);top: 50%;right: -20px;opacity: 0.3;}
+	@keyframes fadeIn {0% { opacity: 0; }100% { opacity: 1; }}
+	@keyframes slideUp {
+		0% {
+		opacity: 0;
+		transform: translateY(20px);
+		}
+		100% {
+		opacity: 1;
+		transform: translateY(0);
+		}
+	}	
+	@keyframes shimmer {
+		0% { left: -100%; }
+		100% { left: 100%; }
+	}
+	.letter-spacing-wide {letter-spacing: 0.2em;}
+	.letter-spacing-wider {letter-spacing: 0.3em;}
+	.gold-social:hover {color: #d4af37;transform: translateY(-1px);}
+	@media (min-width: 640px) {.minimal-icon {width: 18px;height: 18px;}.geometric-accent {width: 50px;height: 50px;right: -25px;}}
+	@media (min-width: 768px) {.geometric-accent {width: 60px;height: 60px;right: -30px;}}
+	@media (max-width: 640px) {.elegant-glow {box-shadow: 0 0 20px rgba(255, 255, 255, 0.02), 0 0 40px rgba(212, 175, 55, 0.01);}.card-container {max-width: 24rem;}}
+	@media (max-width: 400px) {.card-container {max-width: 18rem;}}
+	</style>
 
-    /* Switch button fixed */
-    .switch-link {
-      position: fixed;
-      top: 1rem;
-      right: 1rem;
-      background: #222;
-      color: #eee;
-      padding: 0.5rem 1rem;
-      border-radius: 0.5rem;
-      text-decoration: none;
-      font-weight: 600;
-      transition: background-color 0.3s;
-      z-index: 1000;
-    }
-    .switch-link:hover {
-      background: #444;
-    }
-  </style>
+	<script id="i18n-data" type="application/json">
+	{
+		"defaultLocale": "fr",
+		"config": {
+		"phoneHref": "tel:+33744956764",
+		"phoneDisplay": "+33 7 44 95 67 64",
+		"emailHref": "mailto:contact@captain-event.com",
+		"emailDisplay": "contact@captain-event.com"
+		},
+		"locales": {
+		"fr": {
+			"front": { "tagline1": "Agence d'Événementiel Haut de Gamme", "tagline2": "Créativité • Excellence • Sur-Mesure", "mmxxv": "MMXXV", "labels": { "mobile": "Mobile", "email": "Email" } },
+			"back": { "title": "NOS SERVICES", "services": ["Soirées d’Entreprise & Galas","Festivals & Événements Grand Public","Mariages d’Exception","Célébrations Personnalisées"], "quote": "Chaque événement est une œuvre d'art unique", "cities": "PARIS • LYON • MARSEILLE" }
+		},
+		"en": {
+			"front": { "tagline1": "High-End Event Agency", "tagline2": "Creativity • Excellence • Tailor-Made", "mmxxv": "MMXXV", "labels": { "mobile": "Mobile", "email": "Email" } },
+			"back": { "title": "OUR SERVICES", "services": ["Corporate Evenings & Galas","Festivals & Public Events","Exceptional Weddings","Personalized Celebrations"], "quote": "Each event is a unique work of art", "cities": "PARIS • LYON • MARSEILLE" }
+		},
+		"de": {
+			"front": { "tagline1": "Premium Eventagentur", "tagline2": "Kreativität • Exzellenz • Maßgeschneidert", "mmxxv": "MMXXV", "labels": { "mobile": "Mobil", "email": "E-Mail" } },
+			"back": { "title": "UNSERE DIENSTLEISTUNGEN", "services": ["Firmenabende & Galas","Festivals & Öffentliche Veranstaltungen","Hochzeiten der Extraklasse","Personalisierte Feierlichkeiten"], "quote": "Jede Veranstaltung ist ein einzigartiges Kunstwerk", "cities": "PARIS • LYON • MARSEILLE" }
+		},
+		"es": {
+			"front": { "tagline1": "Agencia de Eventos de Alta Gama", "tagline2": "Creatividad • Excelencia • A Medida", "mmxxv": "MMXXV", "labels": { "mobile": "Móvil", "email": "Correo" } },
+			"back": { "title": "NUESTROS SERVICIOS", "services": ["Eventos Corporativos y Galas","Festivales y Eventos Públicos","Bodas de Excepción","Celebraciones Personalizadas"], "quote": "Cada evento es una obra de arte única", "cities": "PARÍS • LYON • MARSELLA" }
+		},
+		"uk": {
+			"front": { "tagline1": "Преміум агентство з організації подій", "tagline2": "Креативність • Досконалість • Індивідуальний підхід", "mmxxv": "MMXXV", "labels": { "mobile": "Мобільний", "email": "Ел. пошта" } },
+			"back": { "title": "НАШІ ПОСЛУГИ", "services": ["Корпоративні вечори та бали","Фестивалі та публічні заходи","Весілля виняткового рівня","Персоналізовані святкування"], "quote": "Кожна подія — це унікальний витвір мистецтва", "cities": "ПАРИЖ • ЛІОН • МАРСЕЛЬ" }
+		},
+		"ru": {
+			"front": { "tagline1": "Агентство элитных мероприятий", "tagline2": "Креатив • Безупречность • Индивидуально", "mmxxv": "MMXXV", "labels": { "mobile": "Мобильный", "email": "Эл. почта" } },
+			"back": { "title": "НАШИ УСЛУГИ", "services": ["Корпоративные вечера и балы","Фестивали и публичные мероприятия","Свадьбы исключительного уровня","Персонализированные праздники"], "quote": "Каждое событие — уникальное произведение искусства", "cities": "ПАРИЖ • ЛИОН • МАРСЕЛЬ" }
+		},
+		"pt": {
+			"front": { "tagline1": "Agência de Eventos de Alto Padrão", "tagline2": "Criatividade • Excelência • Sob Medida", "mmxxv": "MMXXV", "labels": { "mobile": "Telemóvel", "email": "Email" } },
+			"back": { "title": "NOSSOS SERVIÇOS", "services": ["Eventos Corporativos e Galas","Festivais e Eventos Públicos","Casamentos de Exceção","Celebrações Personalizadas"], "quote": "Cada evento é uma obra de arte única", "cities": "PARIS • LYON • MARSELHA" }
+		},
+		"it": {
+			"front": { "tagline1": "Agenzia di Eventi di Alta Gamma", "tagline2": "Creatività • Eccellenza • Su Misura", "mmxxv": "MMXXV", "labels": { "mobile": "Cellulare", "email": "Email" } },
+			"back": { "title": "I NOSTRI SERVIZI", "services": ["Serate Aziendali e Gala","Festival ed Eventi Pubblici","Matrimoni d'Eccezione","Celebrazioni Personalizzate"], "quote": "Ogni evento è un’opera d’arte unica", "cities": "PARIGI • LIONE • MARSIGLIA" }
+		},
+		"zh": {
+			"front": { "tagline1": "高端活动策划机构", "tagline2": "创意 • 卓越 • 定制", "mmxxv": "MMXXV", "labels": { "mobile": "手机", "email": "邮箱" } },
+			"back": { "title": "我们的服务", "services": ["企业晚会与盛典","节日与公众活动","非凡婚礼","个性化庆典"], "quote": "每一场活动都是独一无二的艺术作品", "cities": "巴黎 • 里昂 • 马赛" }
+		},
+		"hi": {
+			"front": { "tagline1": "प्रीमियम इवेंट एजेंसी", "tagline2": "रचनात्मकता • उत्कृष्टता • कस्टम-निर्मित", "mmxxv": "MMXXV", "labels": { "mobile": "मोबाइल", "email": "ईमेल" } },
+			"back": { "title": "हमारी सेवाएँ", "services": ["कॉर्पोरेट संध्याएँ व गाला","त्योहार और सार्वजनिक कार्यक्रम","विशिष्ट शादियाँ","व्यक्तिगत उत्सव"], "quote": "हर कार्यक्रम एक अनोखी कला कृति है", "cities": "पेरिस • लियोन • मार्से" }
+		},
+		"ar": {
+			"front": { "tagline1": "وكالة فعاليات فاخرة", "tagline2": "إبداع • تميّز • تفصيل حسب الطلب", "mmxxv": "MMXXV", "labels": { "mobile": "الهاتف المحمول", "email": "البريد الإلكتروني" } },
+			"back": { "title": "خدماتنا", "services": ["أمسيات وحفلات الشركات","المهرجانات والفعاليات العامة","حفلات زفاف استثنائية","احتفالات مخصصة"], "quote": "كل فعالية هي عمل فني فريد", "cities": "باريس • ليون • مرسيليا" }
+		}
+		}
+	}
+</script>
 </head>
-<body class="flex items-center justify-center min-h-screen px-4">
-  <a href="design2.html" class="switch-link" aria-label="Passer au design 2">Design 2</a>
+<body class="min-h-screen flex items-center justify-center p-3 sm:p-4 slide-up">
+	<div class="card-container" id="businessCard">
+	<!-- RECTO -->
+	<div class="card-inner">
+		<div class="card-face card-front premium-gradient subtle-border rounded-2xl p-6 sm:p-8 md:p-12 elegant-glow fade-in overflow-hidden">
+		<div class="geometric-accent"></div>
 
-  <div class="container">
-    <div id="design1" class="design1 animate-fade-in">
-      <div class="text-center mb-12">
-        <h1 class="text-5xl font-extralight mb-2 letter-spacing-wide" style="margin:0;">CAPTAIN</h1>
-        <h2 class="text-xl font-light text-gray-400 letter-spacing-wider uppercase" style="margin:0;">EVENT</h2>
-        <div class="accent-line"></div>
-      </div>
+		<div class="text-center mb-8 sm:mb-10 md:mb-12 relative">
+			<div class="flex items-center justify-center mb-4">
+			<img src="logo.png" alt="Logo Captain Event" class="h-16 sm:h-20 md:h-24 mb-8 sm:mb-10 md:mb-12 mx-auto slide-up" />
+			</div>
+		</div>
 
-      <div class="text-center mb-12">
-        <p class="text-gray-300 font-light text-lg mb-2" style="margin:0;">Agence d’Événementiel Haut de Gamme</p>
-        <p class="text-gray-500 text-sm font-light" style="margin:0;">Créativité • Excellence • Sur-Mesure</p>
-      </div>
+		<div class="text-center mb-8 sm:mb-10 md:mb-12 slide-up relative">
+			<div class="gold-divider w-12 sm:w-14 md:w-16 mx-auto mb-3 sm:mb-4"></div>
+            <p class="text-gray-300 font-light text-lg sm:text-base md:text-sm mb-2" style="margin:0" data-i18n="front.tagline1"></p>
+			<p class="text-gray-500 text-xs sm:text-sm font-light" style="margin:0" data-i18n="front.tagline2"></p>
+			<div class="gold-divider w-12 sm:w-14 md:w-16 mx-auto mt-3 sm:mt-4"></div>
+		</div>
 
-      <div class="space-y-6 mb-12">
-        <div class="flex items-center justify-between py-4 border-b border-gray-800/50" style="flex-wrap: wrap;">
-          <span class="text-gray-400 text-sm font-light">Téléphone</span>
-          <a href="tel:+33612345678" class="text-white font-light hover:text-gray-300 transition-colors">+33 6 12 34 56 78</a>
-        </div>
-        <div class="flex items-center justify-between py-4 border-b border-gray-800/50" style="flex-wrap: wrap;">
-          <span class="text-gray-400 text-sm font-light">Email</span>
-          <a href="mailto:contact@captain-event.com" class="text-white font-light hover:text-gray-300 transition-colors">contact@captain-event.com</a>
-        </div>
-        <div class="flex items-center justify-between py-4" style="flex-wrap: wrap;">
-          <span class="text-gray-400 text-sm font-light">Adresse</span>
-          <span class="text-white font-light">Paris, France</span>
-        </div>
-      </div>
+		<div class="space-y-4 sm:space-y-5 md:space-y-6 mb-8 sm:mb-10 md:mb-12 slide-up">
+			<div class="contact-item flex items-center justify-between py-3 sm:py-4 border-b border-gray-800/50 hover:border-gray-700/50 transition-all duration-300 relative">
+			<div class="flex items-center space-x-3 sm:space-x-4">
+				<svg class="minimal-icon" fill="gray" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+				<span class="text-gray-400 text-xs sm:text-sm font-light" data-i18n="front.labels.mobile"></span>
+			</div>
+			<a id="phoneLink" class="text-white font-light hover:text-gray-300 transition-colors text-xs sm:text-sm"></a>
+			</div>
 
-      <div class="text-center">
-        <div class="accent-line w-16 mx-auto mb-4"></div>
-        <p class="text-gray-600 text-xs font-light letter-spacing-wide" style="margin:0;">MMXXIV</p>
-      </div>
-    </div>
-  </div>
+			<div class="contact-item flex items-center justify-between py-3 sm:py-4 border-b border-gray-800/50 hover:border-gray-700/50 transition-all duration-300 relative">
+			<div class="flex items-center space-x-3 sm:space-x-4">
+				<svg class="minimal-icon" fill="gray" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+				<span class="text-gray-400 text-xs sm:text-sm font-light" data-i18n="front.labels.email"></span>
+			</div>
+			<a id="emailLink" class="text-white font-light hover:text-gray-300 transition-colors text-xs sm:text-sm"></a>
+			</div>
+		</div>
+
+		<div class="flex items-center justify-center mb-6 sm:mb-8 slide-up">
+			<div class="gold-dot"></div>
+			<div class="gold-accent w-8 sm:w-10 md:w-12 mx-3 sm:mx-4"></div>
+			<div class="w-2 h-2 border border-yellow-600 rotate-45 opacity-50"></div>
+			<div class="gold-accent w-8 sm:w-10 md:w-12 mx-3 sm:mx-4"></div>
+			<div class="gold-dot"></div>
+		</div>
+
+		<div class="text-center slide-up">
+			<div class="flex items-center justify-center mb-3 sm:mb-4">
+			<div class="gold-accent w-6 sm:w-8"></div>
+			<div class="w-1 h-1 bg-yellow-600 rounded-full mx-2 sm:mx-3 opacity-70"></div>
+			<div class="gold-accent w-6 sm:w-8"></div>
+			</div>
+			<p class="text-gray-600 text-xs font-light letter-spacing-wide" data-i18n="front.mmxxv"></p>
+		</div>
+		</div>
+
+	<!-- VERSO -->
+	<div class="card-face card-back premium-gradient subtle-border rounded-2xl p-6 sm:p-8 md:p-12 elegant-glow hover-lift fade-in relative overflow-hidden hidden">
+		<div class="geometric-accent"></div>
+
+		<div class="text-center mb-8 sm:mb-10 slide-up">
+			<div class="gold-divider w-16 sm:w-20 md:w-24 mx-auto mb-4 sm:mb-6"></div>
+				<h2 class="text-white text-lg sm:text-xl md:text-2xl font-light mb-4 sm:mb-6 letter-spacing-wide" data-i18n="back.title"></h2>
+			<div class="gold-divider w-16 sm:w-20 md:w-24 mx-auto"></div>
+	 		</div>
+
+		<div id="servicesList" class="space-y-4 sm:space-y-5 mb-8 sm:mb-10 slide-up"></div>
+
+		<div class="text-center mb-6 sm:mb-8 slide-up">
+			<div class="gold-divider w-12 sm:w-16 mx-auto mb-3 sm:mb-4"></div>
+			<p class="text-gray-400 text-xs sm:text-sm font-light italic" data-i18n="back.quote"></p>
+			<div class="gold-divider w-12 sm:w-16 mx-auto mt-3 sm:mt-4"></div>
+		</div>
+
+		<div class="flex items-center justify-center mb-6 sm:mb-8 slide-up">
+			<div class="gold-dot"></div>
+			<div class="gold-accent w-8 sm:w-10 md:w-12 mx-3 sm:mx-4"></div>
+			<div class="w-2 h-2 border border-yellow-600 rotate-45 opacity-50"></div>
+			<div class="gold-accent w-8 sm:w-10 md:w-12 mx-3 sm:mx-4"></div>
+			<div class="gold-dot"></div>
+		</div>
+
+		<div class="text-center slide-up">
+			<p class="text-gray-500 text-xs font-light letter-spacing-wide mb-2" data-i18n="back.cities"></p>
+		</div>
+		</div>
+	</div>
+	</div>
+
+	<script>
+		document.documentElement.classList.add('auto-i18n-hide');
+		const MAP = new Map([
+			["fr","fr"],["fr-FR","fr"],["fr-CA","fr"],
+			["en","en"],["en-US","en"],["en-GB","en"],
+			["es","es"],["es-ES","es"],["es-MX","es"],
+			["de","de"],["de-DE","de"], ["de-AT","de"], ["de-CH","de"],
+			["uk","uk"],["uk-UA","uk"],
+			["ru","ru"],["ru-RU","ru"],
+			["pt","pt"],["pt-PT","pt"],["pt-BR","pt"],
+			["it","it"],["it-IT","it"],
+			["zh","zh"],["zh-CN","zh"],["zh-SG","zh"],["zh-Hans","zh"],
+			["hi","hi"],["hi-IN","hi"],
+			["ar","ar"],["ar-SA","ar"],["ar-AE","ar"],["ar-EG","ar"],
+		]);
+
+		function detectLocale(defaultLocale){
+		const list = (navigator.languages && navigator.languages.length)
+			? navigator.languages
+			: [navigator.language || defaultLocale];
+			for (const tag of list){
+				const k = MAP.get(tag) || MAP.get(String(tag).split("-")[0]);
+				if (k) return k;
+			}
+			return defaultLocale;
+		}
+
+		function getJSONFromScript(id){
+		const el = document.getElementById(id);
+		if (!el) return null;
+			try { return JSON.parse(el.textContent); } catch { return null; }
+		}
+
+		(function initI18n(){
+			const content = getJSONFromScript('i18n-data') || {};
+			const locale	= detectLocale(content.defaultLocale || 'fr');
+			const dict	= (content.locales && content.locales[locale]) || (content.locales && content.locales[content.defaultLocale]) || {};
+			const cfg	 = content.config || {};
+
+			const rtl = new Set(['ar','he','fa','ur']);
+			document.documentElement.lang = locale;
+			document.documentElement.dir	= rtl.has(locale) ? 'rtl' : 'ltr';
+
+			const phone = document.getElementById('phoneLink');
+			if (phone){ phone.href = cfg.phoneHref || '#'; phone.textContent = cfg.phoneDisplay || ''; }
+			
+			const email = document.getElementById('emailLink');
+			if (email){ email.href = cfg.emailHref || '#'; email.textContent = cfg.emailDisplay || ''; }
+
+			document.querySelectorAll('[data-i18n]').forEach(el=>{
+				const path = el.getAttribute('data-i18n').split('.');
+				let cur = dict;
+				for (const p of path){ cur = (cur && cur[p] != null) ? cur[p] : undefined; }
+				if (typeof cur === 'string') el.textContent = cur;
+		});
+
+		const services = dict?.back?.services || [];
+		const listEl = document.getElementById('servicesList');
+		if (listEl){
+			listEl.innerHTML = '';
+			for (const text of services){
+			const row = document.createElement('div');
+			row.className = 'flex items-center space-x-3 sm:space-x-4 py-2 sm:py-3';
+			row.innerHTML = '<div class="gold-dot"></div><span class="text-gray-300 text-sm sm:text-base font-light"></span>';
+			row.querySelector('span').textContent = text;
+			listEl.appendChild(row);
+			}
+		}
+		document.documentElement.classList.remove('auto-i18n-hide');
+		})();
+</script>
+
+	<script>
+		const cardContainer = document.getElementById('businessCard');
+		const cardFront = cardContainer.querySelector('.card-front');
+		const cardBack	= cardContainer.querySelector('.card-back');
+
+		function activeFace() {
+		return cardContainer.classList.contains('flipped') ? cardBack : cardFront;
+		}
+		function inactiveFace() {
+		return cardContainer.classList.contains('flipped') ? cardFront : cardBack;
+		}
+
+		cardContainer.addEventListener('click', (e) => {
+			if (e.target.closest('a, button, [data-noflip]')) return;
+
+			const flipped = cardContainer.classList.toggle('flipped');
+			if (flipped) {
+			cardFront.classList.add('hidden');
+			cardBack.classList.remove('hidden');
+			} else {
+			cardBack.classList.add('hidden');
+			cardFront.classList.remove('hidden');
+			}
+		});
+
+		cardContainer.addEventListener('mousemove', (e) => {
+		const rect = cardContainer.getBoundingClientRect();
+		const centerX = rect.left + rect.width / 2;
+		const centerY = rect.top	+ rect.height / 2;
+		const mouseX = e.clientX - centerX;
+		const mouseY = e.clientY - centerY;
+		const rotateX = (mouseY / rect.height) * -10;
+		const rotateY = (mouseX / rect.width) * 10;
+
+		const face = activeFace();
+		face.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
+
+		inactiveFace().style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0)';
+		});
+
+		cardContainer.addEventListener('mouseleave', () => {
+		activeFace().style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0)';
+		});
+	</script>
 </body>
 </html>
